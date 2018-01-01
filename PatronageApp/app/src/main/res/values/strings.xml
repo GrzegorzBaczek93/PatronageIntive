@@ -1,10 +1,21 @@
 <resources>
-    <string name="app_name">Grzegorz.Baczek</string>
+    <string name="app_name">Grzegorz Baczek</string>
     <string name="title_activity_main">MainActivity</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_string">Hello :)</string>
 
     <string name="action_settings">Settings</string>
     <string name="loading_in_progress">Loading app...</string>
+    <string name="homepage">HomePage</string>
+    <string name="settings">Settings</string>
+    <string name="about">About</string>
+    <string name="exit">Exit</string>
+    <string name="author">Grzegorz Bączek</string>
+    <string name="authorHeader">Application developer</string>
+    <string name="legalNotice">Legal notice</string>
+    <string name="legalFullInfo">License:\nCopyright 2017 Grzegorz Bączek\n\nIcons made by Dave Gandy are licensed by CC 3.0</string>
+    <string name="placeholder">Under construction</string>
+
 </resources>
