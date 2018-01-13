@@ -1,0 +1,64 @@
+package intive.grzegorzbaczek;
+
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.support.v7.widget.AlertDialogLayout;
+import android.view.Gravity;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
+public class LoginActivity extends AppCompatActivity {
+
+    EditText nameInput = null;
+    Button loginButton = null;
+    AlertDialog.Builder dialogBuilder = null;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_login);
+
+        nameInput = (EditText) findViewById(R.id.input_name);
+        loginButton = (Button) findViewById(R.id.button_login);
+        dialogBuilder = new AlertDialog.Builder(this, R.style.AlertDialogStyle);
+
+        loginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                String response = Validate(nameInput);
+
+                if (response == "OK") {
+                    dialogBuilder.setMessage("Hello " + nameInput.getText().toString())
+                            .setNegativeButton(R.string.ok, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                                    startActivity(intent);
+                                    finish();
+                                }
+                            });
+                } else {
+                    dialogBuilder.setMessage(response)
+                            .setNegativeButton(R.string.ok, null);
+                }
+                dialogBuilder.create().show();
+            }
+        });
+    }
+
+    private String Validate(TextView textView) {
+
+        if (textView.getText().toString().length() == 0)
+            return "Name field is empty.\nPlease enter your name.";
+        else
+            return "OK";
+    }
+}

@@ -17,5 +17,8 @@
     <string name="legalNotice">Legal notice</string>
     <string name="legalFullInfo">License:\nCopyright 2017 Grzegorz Bączek\n\nIcons made by Dave Gandy are licensed by CC 3.0</string>
     <string name="placeholder">Under construction</string>
+    <string name="name">Name</string>
+    <string name="login">Login</string>
+    <string name="ok">OK</string>
 
 </resources>

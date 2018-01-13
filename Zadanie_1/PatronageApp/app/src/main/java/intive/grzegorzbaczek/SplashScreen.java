@@ -37,7 +37,7 @@ public class SplashScreen extends AppCompatActivity {
                 Log.e("Splash screen", e.getMessage());
             }
 
-            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+            Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
             startActivity(intent);
             finish();
         }
