@@ -2,6 +2,7 @@ package intive.grzegorzbaczek;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import android.widget.TextView;
 
 public class LoginActivity extends AppCompatActivity {
 
+    String response = null;
     EditText nameInput = null;
     Button loginButton = null;
     AlertDialog.Builder dialogBuilder = null;
@@ -32,10 +34,7 @@ public class LoginActivity extends AppCompatActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                String response = Validate(nameInput);
-
-                if (response == "OK") {
+                if (Validate(nameInput)) {
                     dialogBuilder.setMessage("Hello " + nameInput.getText().toString())
                             .setNegativeButton(R.string.ok, new DialogInterface.OnClickListener() {
                                 @Override
@@ -54,11 +53,13 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    private String Validate(TextView textView) {
-
-        if (textView.getText().toString().length() == 0)
-            return "Name field is empty.\nPlease enter your name.";
-        else
-            return "OK";
+    private boolean Validate(TextView textView) {
+        if (textView.getText().toString().length() == 0) {
+            response = "Name field is empty.\nPlease enter your name.";
+            return false;
+        } else {
+            response = "OK";
+            return true;
+        }
     }
 }
