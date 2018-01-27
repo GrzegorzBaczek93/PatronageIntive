@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/toolbar_insert_option"
+        android:title="Add transaction"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/toolbar_modify_option"
+        android:title="Modify transaction"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/toolbar_delete_option"
+        android:title="Delete transaction"
+        app:showAsAction="never" />
+</menu>

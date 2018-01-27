@@ -1,19 +1,16 @@
-package intive.grzegorzbaczek;
+package intive.grzegorzbaczek.activity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.AlertDialogLayout;
-import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import intive.grzegorzbaczek.R;
 
 public class LoginActivity extends AppCompatActivity {
 

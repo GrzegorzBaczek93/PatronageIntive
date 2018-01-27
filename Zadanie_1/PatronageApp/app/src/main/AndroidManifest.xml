@@ -9,7 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".SplashScreen">
+        <activity android:name=".activity.SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -17,12 +17,18 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name=".activity.MainActivity"
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".LoginActivity"
+            android:name=".activity.LoginActivity"
             android:windowSoftInputMode="stateAlwaysHidden" />
+
+        <provider
+            android:authorities="intive.grzegorzbaczek.db.databasecontentprovider.provider"
+            android:name=".db.DatabaseContentProvider"
+            android:exported="true"
+            android:permission="intive.grzegorzbaczek.db.databasecontentprovider.provider.READ_WRITE"/>
     </application>
 
 </manifest>

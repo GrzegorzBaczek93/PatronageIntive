@@ -1,9 +1,11 @@
-package intive.grzegorzbaczek;
+package intive.grzegorzbaczek.activity;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+
+import intive.grzegorzbaczek.R;
 
 public class SplashScreen extends AppCompatActivity {
 
