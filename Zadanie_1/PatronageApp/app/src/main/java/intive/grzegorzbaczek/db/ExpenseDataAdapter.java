@@ -1,10 +1,12 @@
 package intive.grzegorzbaczek.db;
 
 import android.database.Cursor;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import intive.grzegorzbaczek.R;
@@ -14,6 +16,12 @@ import intive.grzegorzbaczek.entity.Expense;
 public class ExpenseDataAdapter extends RecyclerView.Adapter<ExpenseDataAdapter.ViewHolder> {
 
     private Cursor mCursor;
+    private int selectedPosition;
+    public static long selectedItemID = -1;
+    public static String selectedItemDate;
+    public static String selectedItemType;
+    public static String selectedItemName;
+    public static String selectedItemValue;
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView textViewDate;
@@ -28,7 +36,6 @@ public class ExpenseDataAdapter extends RecyclerView.Adapter<ExpenseDataAdapter.
             textViewType = view.findViewById(R.id.recyclerExpenseType_textView);
             textViewName = view.findViewById(R.id.recyclerExpenseName_textView);
             textViewValue = view.findViewById(R.id.recyclerExpenseValue_textView);
-
         }
     }
 
@@ -39,8 +46,8 @@ public class ExpenseDataAdapter extends RecyclerView.Adapter<ExpenseDataAdapter.
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
-        if(mCursor.moveToPosition(position)){
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
+        if (mCursor.moveToPosition(position)) {
             holder.textViewDate.setText(mCursor.getString(
                     mCursor.getColumnIndexOrThrow(Expense.DATE_NAME)
             ));
@@ -54,9 +61,29 @@ public class ExpenseDataAdapter extends RecyclerView.Adapter<ExpenseDataAdapter.
                     mCursor.getColumnIndexOrThrow(Expense.VALUE_NAME)
             ));
         }
+
+        if (selectedPosition == position) {
+            holder.itemView.setBackgroundColor(Color.parseColor("#FF4081"));
+
+            selectedItemID = mCursor.getLong(mCursor.getColumnIndexOrThrow(Expense.INDEX_NAME));
+            selectedItemDate = mCursor.getString(mCursor.getColumnIndexOrThrow(Expense.DATE_NAME));
+            selectedItemType = mCursor.getString(mCursor.getColumnIndexOrThrow(Expense.TYPEID_NAME));
+            selectedItemName = mCursor.getString(mCursor.getColumnIndexOrThrow(Expense.NAME_NAME));
+            selectedItemValue = mCursor.getString(mCursor.getColumnIndexOrThrow(Expense.VALUE_NAME));
+        } else {
+            holder.itemView.setBackgroundColor(Color.TRANSPARENT);
+        }
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                selectedPosition = position;
+                notifyDataSetChanged();
+            }
+        });
     }
 
-    public void setExpenses(Cursor cursor){
+    public void setExpenses(Cursor cursor) {
         mCursor = cursor;
         notifyDataSetChanged();
     }

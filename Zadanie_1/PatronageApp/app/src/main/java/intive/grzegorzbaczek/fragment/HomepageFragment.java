@@ -1,5 +1,6 @@
 package intive.grzegorzbaczek.fragment;
 
+import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -20,6 +21,7 @@ import intive.grzegorzbaczek.entity.Expense;
 public class HomepageFragment extends Fragment {
 
     private static final int LOADER_EXPANSES = 1;
+    public static Context context;
 
     private RecyclerView mRecyclerView;
     private ExpenseDataAdapter mAdapter;
@@ -47,6 +49,8 @@ public class HomepageFragment extends Fragment {
         mAdapter = new ExpenseDataAdapter();
         mRecyclerView.setAdapter(mAdapter);
 
+        context = getContext();
+
         getLoaderManager().initLoader(LOADER_EXPANSES, null, mLoaderCallbacks);
 
         return HomepageFragmentView;
@@ -60,7 +64,7 @@ public class HomepageFragment extends Fragment {
                     return new CursorLoader(
                             getContext(),
                             DatabaseContentProvider.URI_EXPENSE,
-                            null,
+                            new String[]{Expense.INDEX_NAME, Expense.DATE_NAME, Expense.NAME_NAME, Expense.VALUE_NAME, Expense.NAME_NAME},
                             null, null,null
                             );
                 default:

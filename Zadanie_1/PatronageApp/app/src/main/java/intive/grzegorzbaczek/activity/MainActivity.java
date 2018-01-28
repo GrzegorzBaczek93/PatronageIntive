@@ -1,7 +1,7 @@
 package intive.grzegorzbaczek.activity;
 
 import android.content.ContentValues;
-import android.net.Uri;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -9,29 +9,36 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
 
 import intive.grzegorzbaczek.R;
-import intive.grzegorzbaczek.db.DatabaseContentProvider;
+import intive.grzegorzbaczek.db.ExpenseDataAdapter;
 import intive.grzegorzbaczek.fragment.AboutFragment;
 import intive.grzegorzbaczek.fragment.HomepageFragment;
 import intive.grzegorzbaczek.fragment.SettingsFragment;
+import intive.grzegorzbaczek.thread.DatabaseAsyncTask;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    private int currentFragment = R.id.nav_homepage;
     private int lastUsedFragment = R.id.nav_homepage;
     private String login = null;
     private String authorizationData = null;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         NavigationView navigationView = findViewById(R.id.nav_view);
@@ -76,13 +83,20 @@ public class MainActivity extends AppCompatActivity
         Class fragmentClass = null;
 
         switch (viewId) {
+            case R.id.nav_homepage:
+                fragmentClass = HomepageFragment.class;
+                title = R.string.homepage;
+                currentFragment = R.id.nav_homepage;
+                break;
             case R.id.nav_settings:
                 fragmentClass = SettingsFragment.class;
                 title = R.string.settings;
+                currentFragment = R.id.nav_settings;
                 break;
             case R.id.nav_about:
                 fragmentClass = AboutFragment.class;
                 title = R.string.about;
+                currentFragment = R.id.nav_about;
                 break;
             case R.id.nav_exit:
                 finishAndRemoveTask();
@@ -127,22 +141,75 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        AlertDialog.Builder dialogBuilder;
+        if (currentFragment == R.id.nav_homepage) {
 
-        switch(item.getItemId()){
-            case R.id.toolbar_insert_option:
-                DatabaseContentProvider provider = new DatabaseContentProvider();
-                ContentValues values = new ContentValues(4);
-                values.put("date", "today");
-                values.put("type_id", "typeOfToday");
-                values.put("name", "gregor");
-                values.put("value", "101");
-                Uri uri = Uri.parse("content://intive.grzegorzbaczek.db.databasecontentprovider.provider/expenses");
-                provider.insert(uri, values);
-                break;
-            default:
-                break;
+            switch (item.getItemId()) {
+                case R.id.toolbar_insert_option:
+                    getDataFromUser("insert");
+                    break;
+                case R.id.toolbar_modify_option:
+                    getDataFromUser("update");
+                    break;
+                case R.id.toolbar_delete_option:
+                    DatabaseAsyncTask asyncTask = new DatabaseAsyncTask();
+                    asyncTask.execute("delete", String.valueOf(ExpenseDataAdapter.selectedItemID));
+                    break;
+                default:
+                    break;
+            }
+        } else {
+            dialogBuilder = new AlertDialog.Builder(this, R.style.AlertDialogStyle);
+            dialogBuilder.setMessage("Wrong fragment!");
+            dialogBuilder.setNeutralButton("OK", null);
+            dialogBuilder.create().show();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    public void getDataFromUser(final String option) {
+        LayoutInflater layoutInflater = LayoutInflater.from(this);
+        View promptsView = layoutInflater.inflate(R.layout.userinput_dialogform, null);
+
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+        dialogBuilder.setView(promptsView);
+
+        final EditText nameInput = promptsView.findViewById(R.id.formName);
+        final EditText dateInput = promptsView.findViewById(R.id.formDate);
+        final EditText typeInput = promptsView.findViewById(R.id.formType);
+        final EditText valueInput = promptsView.findViewById(R.id.formValue);
+
+        if(option == "update"){
+            nameInput.setText(ExpenseDataAdapter.selectedItemName);
+            dateInput.setText(ExpenseDataAdapter.selectedItemDate);
+            typeInput.setText(ExpenseDataAdapter.selectedItemType);
+            valueInput.setText(ExpenseDataAdapter.selectedItemValue);
         }
 
-        return super.onOptionsItemSelected(item);
+        dialogBuilder
+                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        DatabaseAsyncTask asyncTask = new DatabaseAsyncTask();
+                        if (option == "insert") {
+                            asyncTask.execute(
+                                    "insert",
+                                    dateInput.getText().toString(),
+                                    typeInput.getText().toString(),
+                                    nameInput.getText().toString(),
+                                    valueInput.getText().toString());
+                        } else {
+                            asyncTask.execute(
+                                    "update",
+                                    String.valueOf(ExpenseDataAdapter.selectedItemID),
+                                    dateInput.getText().toString(),
+                                    typeInput.getText().toString(),
+                                    nameInput.getText().toString(),
+                                    valueInput.getText().toString());
+                        }
+                    }
+                })
+                .setNegativeButton("Cancel", null);
+        dialogBuilder.create().show();
     }
 }

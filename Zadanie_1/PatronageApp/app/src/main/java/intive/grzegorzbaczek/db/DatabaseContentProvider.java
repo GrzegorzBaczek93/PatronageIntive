@@ -17,8 +17,11 @@ import java.util.ArrayList;
 
 import intive.grzegorzbaczek.dao.ExpenseDao;
 import intive.grzegorzbaczek.entity.Expense;
+import intive.grzegorzbaczek.fragment.HomepageFragment;
 
 public class DatabaseContentProvider extends ContentProvider {
+
+    private Context context = null;
 
     public static final String AUTHORITY = "intive.grzegorzbaczek.db.databasecontentprovider.provider";
 
@@ -45,8 +48,8 @@ public class DatabaseContentProvider extends ContentProvider {
     @Override
     public Cursor query(@NonNull Uri uri, @Nullable String[] strings, @Nullable String s, @Nullable String[] strings1, @Nullable String s1) {
         final int code = MATCHER.match(uri);
+        context = HomepageFragment.context;
         if (code == CODE_DIR || code == CODE_ITEM) {
-            final Context context = getContext();
             if (context == null) {
                 return null;
             }
@@ -82,7 +85,7 @@ public class DatabaseContentProvider extends ContentProvider {
     public Uri insert(@NonNull Uri uri, @Nullable ContentValues contentValues) {
         switch (MATCHER.match(uri)) {
             case CODE_DIR:
-                final Context context = getContext();
+                context = HomepageFragment.context;
                 if (context == null) {
                     return null;
                 }
@@ -102,7 +105,7 @@ public class DatabaseContentProvider extends ContentProvider {
             case CODE_DIR:
                 throw new IllegalArgumentException("Invalid URI, cannot update without ID " + uri);
             case CODE_ITEM:
-                final Context context = getContext();
+                context = HomepageFragment.context;
                 if (context == null) {
                     return 0;
                 }
@@ -120,7 +123,7 @@ public class DatabaseContentProvider extends ContentProvider {
             case CODE_DIR:
                 throw new IllegalArgumentException("Invalid URI, cannot update without ID " + uri);
             case CODE_ITEM:
-                final Context context = getContext();
+                context = HomepageFragment.context;
                 if (context == null) {
                     return 0;
                 }
@@ -137,7 +140,6 @@ public class DatabaseContentProvider extends ContentProvider {
     @NonNull
     @Override
     public ContentProviderResult[] applyBatch(@NonNull ArrayList<ContentProviderOperation> operations) throws OperationApplicationException {
-        final Context context = getContext();
         if (context == null) {
             return new ContentProviderResult[0];
         }
@@ -156,7 +158,7 @@ public class DatabaseContentProvider extends ContentProvider {
     public int bulkInsert(@NonNull Uri uri, @NonNull ContentValues[] values) {
         switch (MATCHER.match(uri)) {
             case CODE_DIR:
-                final Context context = getContext();
+                context = HomepageFragment.context;
                 if (context == null) {
                     return 0;
                 }
