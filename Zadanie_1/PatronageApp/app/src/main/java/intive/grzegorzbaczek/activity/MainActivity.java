@@ -146,10 +146,12 @@ public class MainActivity extends AppCompatActivity
 
             switch (item.getItemId()) {
                 case R.id.toolbar_insert_option:
-                    getDataFromUser("insert");
+                    manageDataFromUser("insert");
                     break;
                 case R.id.toolbar_modify_option:
-                    getDataFromUser("update");
+                    if (HomepageFragment.isRecyclerEmpty) {
+                        manageDataFromUser("update");
+                    }
                     break;
                 case R.id.toolbar_delete_option:
                     DatabaseAsyncTask asyncTask = new DatabaseAsyncTask();
@@ -167,7 +169,7 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-    public void getDataFromUser(final String option) {
+    public void manageDataFromUser(final String option) {
         LayoutInflater layoutInflater = LayoutInflater.from(this);
         View promptsView = layoutInflater.inflate(R.layout.userinput_dialogform, null);
 
@@ -179,7 +181,7 @@ public class MainActivity extends AppCompatActivity
         final EditText typeInput = promptsView.findViewById(R.id.formType);
         final EditText valueInput = promptsView.findViewById(R.id.formValue);
 
-        if(option == "update"){
+        if (option == "update") {
             nameInput.setText(ExpenseDataAdapter.selectedItemName);
             dateInput.setText(ExpenseDataAdapter.selectedItemDate);
             typeInput.setText(ExpenseDataAdapter.selectedItemType);

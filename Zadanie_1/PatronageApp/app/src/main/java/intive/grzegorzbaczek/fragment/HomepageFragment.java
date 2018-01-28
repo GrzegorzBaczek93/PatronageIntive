@@ -22,6 +22,7 @@ public class HomepageFragment extends Fragment {
 
     private static final int LOADER_EXPANSES = 1;
     public static Context context;
+    public static boolean isRecyclerEmpty = true;
 
     private RecyclerView mRecyclerView;
     private ExpenseDataAdapter mAdapter;
@@ -77,6 +78,10 @@ public class HomepageFragment extends Fragment {
             switch (loader.getId()) {
                 case LOADER_EXPANSES:
                     mAdapter.setExpenses(data);
+                    if(mAdapter.getItemCount() > 0)
+                        isRecyclerEmpty = true;
+                    else
+                        isRecyclerEmpty = false;
                     break;
             }
         }
