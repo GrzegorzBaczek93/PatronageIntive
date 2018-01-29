@@ -1,7 +1,9 @@
 package intive.grzegorzbaczek.entity;
 
 import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Embedded;
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.PrimaryKey;
 import android.content.ContentValues;
 import android.provider.BaseColumns;
@@ -23,8 +25,9 @@ public class Expense {
     @ColumnInfo(name = Expense.DATE_NAME)
     public String date;
 
+    @ForeignKey(entity = ExpenseType.class, parentColumns = Expense.TYPEID_NAME, childColumns = ExpenseType.INDEX_NAME)
     @ColumnInfo(name = Expense.TYPEID_NAME)
-    public String typeId;
+    public int typeId;
 
     @ColumnInfo(name = Expense.NAME_NAME)
     public String name;
@@ -41,7 +44,7 @@ public class Expense {
             expense.date = values.getAsString(DATE_NAME);
         }
         if(values.containsKey(TYPEID_NAME)){
-            expense.typeId = values.getAsString(TYPEID_NAME);
+            expense.typeId = values.getAsInteger(TYPEID_NAME);
         }
         if(values.containsKey(NAME_NAME)){
             expense.name = values.getAsString(NAME_NAME);

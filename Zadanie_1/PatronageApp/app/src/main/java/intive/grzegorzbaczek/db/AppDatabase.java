@@ -22,7 +22,24 @@ public abstract class AppDatabase extends RoomDatabase {
             sInstance = Room
                     .databaseBuilder(context.getApplicationContext(), AppDatabase.class, "expensedb")
                     .build();
+            sInstance.fillTableWithTypes();
         }
         return sInstance;
+    }
+
+    public void fillTableWithTypes(){
+        if (expenseDao().countTypes() == 0){
+            ExpenseType type = new ExpenseType();
+            beginTransaction();
+            try {
+                for (int i = 0; i < ExpenseType.expenseTypes.length; i++){
+                    type.typeName = ExpenseType.expenseTypes[i];
+                    expenseDao().insert(type);
+                }
+                setTransactionSuccessful();
+            } finally {
+                endTransaction();
+            }
+        }
     }
 }

@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import intive.grzegorzbaczek.R;
 import intive.grzegorzbaczek.entity.Expense;
+import intive.grzegorzbaczek.entity.ExpenseType;
 
 
 public class ExpenseDataAdapter extends RecyclerView.Adapter<ExpenseDataAdapter.ViewHolder> {
@@ -55,7 +56,7 @@ public class ExpenseDataAdapter extends RecyclerView.Adapter<ExpenseDataAdapter.
                     mCursor.getColumnIndexOrThrow(Expense.NAME_NAME)
             ));
             holder.textViewType.setText(mCursor.getString(
-                    mCursor.getColumnIndexOrThrow(Expense.TYPEID_NAME)
+                    mCursor.getColumnIndexOrThrow(ExpenseType.TYPE_NAME)
             ));
             holder.textViewValue.setText(mCursor.getString(
                     mCursor.getColumnIndexOrThrow(Expense.VALUE_NAME)
@@ -65,9 +66,9 @@ public class ExpenseDataAdapter extends RecyclerView.Adapter<ExpenseDataAdapter.
         if (selectedPosition == position) {
             holder.itemView.setBackgroundColor(Color.parseColor("#FF4081"));
 
-            selectedItemID = mCursor.getLong(mCursor.getColumnIndexOrThrow(Expense.INDEX_NAME));
+             selectedItemID = mCursor.getLong(mCursor.getColumnIndexOrThrow(Expense.INDEX_NAME));
             selectedItemDate = mCursor.getString(mCursor.getColumnIndexOrThrow(Expense.DATE_NAME));
-            selectedItemType = mCursor.getString(mCursor.getColumnIndexOrThrow(Expense.TYPEID_NAME));
+            selectedItemType = mCursor.getString(mCursor.getColumnIndexOrThrow(ExpenseType.TYPE_NAME));
             selectedItemName = mCursor.getString(mCursor.getColumnIndexOrThrow(Expense.NAME_NAME));
             selectedItemValue = mCursor.getString(mCursor.getColumnIndexOrThrow(Expense.VALUE_NAME));
         } else {

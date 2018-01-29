@@ -21,4 +21,11 @@
     <string name="login">Login</string>
     <string name="ok">OK</string>
 
+    <string-array name="expenseTypes">
+        <item>Food</item>
+        <item>Bills</item>
+        <item>Health Care</item>
+        <item>Clothes</item>
+        <item>Others</item>
+    </string-array>
 </resources>
